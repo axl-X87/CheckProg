@@ -1,0 +1,55 @@
+﻿<Window x:Class="CheckProg.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CheckProg"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="1500">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="10*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <ComboBox x:Name="BlockSelectCb" SelectionChanged="BlockSelectCb_SelectionChanged">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding No}"/>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <ListView x:Name="PartsListLv" SelectionChanged="PartsListLv_SelectionChanged" Grid.Row="1">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn DisplayMemberBinding="{Binding RefNo}"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Name}"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding LibName}"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding LibParts}"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding X}"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Y}"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding SizeX}"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding SizeY}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <ListView x:Name="StepsListLv" SelectionChanged="StepsListLv_SelectionChanged" Grid.Column="1">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding No}"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding ViewNo}"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Status}"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding NGReason}"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding Result.FirstNGReason}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Image x:Name="PosImageIb" Grid.Column="2"/>
+    </Grid>
+</Window>

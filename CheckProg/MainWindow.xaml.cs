@@ -103,7 +103,10 @@ namespace CheckProg
             Bitmap bitmap = new Bitmap(fixTotalSizeX, fixTotalSizeY, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             Graphics graphics = Graphics.FromImage(bitmap);
             System.Drawing.Pen pen = new System.Drawing.Pen(System.Drawing.Color.Red, 1);
+            System.Drawing.Pen penG = new System.Drawing.Pen(System.Drawing.Color.Red, 0.1f);
             graphics.DrawRectangle(pen, new System.Drawing.Rectangle(x, y, sizex, sizey));
+            graphics.DrawLine(penG, x, 0, x, fixTotalSizeY);
+            graphics.DrawLine(penG, 0, y, fixTotalSizeX, y);
             PosImageIb.Source = BitmapToBitmapImage(bitmap);
         }
 

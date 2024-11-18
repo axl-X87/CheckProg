@@ -23,7 +23,7 @@ namespace CheckProg
     {
         string path = "";
         Step Step;
-        public ImageWindow(Step step)
+        public ImageWindow(Step step, string fixPath)
         {
             InitializeComponent();
             //string[] arr = new[] { "ImageNameM", "Parts3dName", "OptSlantName045", "OptSlantName135", "OptSlantName225", "OptSlantName315" };
@@ -31,12 +31,9 @@ namespace CheckProg
             Step = step;
             try
             {
-                Uri uriNG = new Uri("C:\\Users\\Привет!\\Pictures\\RS@ARKTUR-BOT-2.0@241113 160931 1 5@5@A@NG@20241113160931Image\\" + step.StepImage.NGName);
+                Uri uriNG = new Uri(fixPath +"\\" + step.StepImage.NGName);
                 BitmapImage bitmapNG = new BitmapImage(uriNG);
                 ImageBx.Source = bitmapNG;
-                Uri uriNGInsp = new Uri("C:\\Users\\Привет!\\Pictures\\RS@ARKTUR-BOT-2.0@241113 160931 1 5@5@A@NG@20241113160931Image\\" + step.StepImage.InspName);
-                BitmapImage bitmapNGInsp = new BitmapImage(uriNG);
-                ImageBx.Source = bitmapNGInsp;
 
             }
             catch { }

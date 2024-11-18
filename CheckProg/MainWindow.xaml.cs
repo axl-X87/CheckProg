@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace CheckProg
 {
@@ -27,13 +28,29 @@ namespace CheckProg
     {
         List<Classes.DataClasses.Block> block = new List<Classes.DataClasses.Block>();
         Board board = new Board();
-        public MainWindow()
+        private string _Path { get; set; }
+        public MainWindow(string path, string name)
         {
             InitializeComponent();
             XmlParceClass xml = new XmlParceClass();
+            xml.SetPath(path + "\\" + name);
             block = xml.XmlParceClassStart().Block;
             board = xml.XmlParceClassStart().Board;
-            BlockSelectCb.ItemsSource = block;           
+            BlockSelectCb.ItemsSource = block;
+            _Path = path;
+            SetAllPic(path + "\\" + board.Image.File);
+        }
+
+        void SetAllPic(string path)
+        {
+            try
+            {
+                Uri uriNG = new Uri(path);
+                BitmapImage bitmapNG = new BitmapImage(uriNG);
+                AllImageIb.Source = bitmapNG;
+
+            }
+            catch { }
         }
 
 
@@ -68,7 +85,7 @@ namespace CheckProg
                 Step step = ((ListBox)sender).SelectedItem as Step;
                 if (step != null)
                 {
-                    ImageWindow imageWindow = new ImageWindow(step);
+                    ImageWindow imageWindow = new ImageWindow(step, _Path + "\\" + board.NGImage.Folder);
                     imageWindow.Show();
                 }
             }
@@ -82,6 +99,7 @@ namespace CheckProg
         {
             int fixTotalSizeX = (int)Convert.ToDouble(board.Info.Length.Replace('.', ','));
             int fixTotalSizeY = (int)Convert.ToDouble(board.Info.Width.Replace('.', ','));
+            y = fixTotalSizeY - y;
             Bitmap bitmap = new Bitmap(fixTotalSizeX, fixTotalSizeY, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             Graphics graphics = Graphics.FromImage(bitmap);
             System.Drawing.Pen pen = new System.Drawing.Pen(System.Drawing.Color.Red, 1);

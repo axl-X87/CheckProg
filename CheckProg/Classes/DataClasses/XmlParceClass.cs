@@ -16,10 +16,17 @@ namespace CheckProg.Classes.DataClasses
 {
     internal class XmlParceClass
     {
+        public string GlobalPath { get; set; }
+
+        public void SetPath(string path)
+        {
+            GlobalPath = path;
+        }
+
         public DataVersion XmlParceClassStart() 
         {
             XmlSerializer serializer = new XmlSerializer(typeof(DataVersion));
-            using (StreamReader reader = new StreamReader("C:\\Users\\Привет!\\Pictures\\RS@ARKTUR-BOT-2.0@241113 160931 1 5@5@A@NG@20241113160931.xml"))
+            using (StreamReader reader = new StreamReader(GlobalPath))
             {
                 return (DataVersion)serializer.Deserialize(reader);
             }

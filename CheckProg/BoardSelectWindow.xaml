@@ -5,25 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CheckProg"
         mc:Ignorable="d"
-        Title="BoardSelectWindow" Height="450" Width="800">
-    <Grid>
+        Title="BoardSelectWindow" Height="350" Width="400" ResizeMode="NoResize">
+    <Grid VerticalAlignment="Top">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
-            <RowDefinition Height="10*" />
         </Grid.RowDefinitions>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
-            <StackPanel Orientation="Horizontal">
-                <TextBox x:Name="PathTbx" MinWidth="150" Margin="10 5"/>
-                <Button x:Name="BrowseBtn" Click="BrowseBtn_Click" Content="Browse" Margin="5"/>
-            </StackPanel>
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <GroupBox Header="Selected Path" Grid.Row="0" Margin="10 5" Height="40">
+                <TextBlock x:Name="PathTbx" MinWidth="150" />
+            </GroupBox>
+            <Button x:Name="BrowseBtn" Click="BrowseBtn_Click" Content="Select Path" Margin="5" Height="30" Grid.Row="1"/>
         </Grid>
-        <ComboBox x:Name="SelectBoardCbx" Grid.Row="1"/>
-        <Button x:Name="SendBtn" Click="SendBtn_Click" Content="Select" Grid.Row="2"/>
+        <GroupBox Header="Choose Board" Grid.Row="1" Height="50">
+            <ComboBox x:Name="SelectBoardCbx" />
+        </GroupBox>
+        <Button x:Name="SendBtn" Click="SendBtn_Click" Content="Select" Grid.Row="2" Height="40"/>
     </Grid>
 </Window>

@@ -26,19 +26,27 @@ namespace CheckProg
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<Classes.DataClasses.Block> block = new List<Classes.DataClasses.Block>();
+        List<Parts> PartNGList = new List<Parts>();
         Board board = new Board();
+        DataVersion versionTemp = new DataVersion();
         private string _Path { get; set; }
         public MainWindow(string path, string name)
         {
             InitializeComponent();
             XmlParceClass xml = new XmlParceClass();
             xml.SetPath(path + "\\" + name);
-            block = xml.XmlParceClassStart().Block;
-            board = xml.XmlParceClassStart().Board;
-            BlockSelectCb.ItemsSource = block;
+            versionTemp =  xml.XmlParceClassStart();
+            board = versionTemp.Board;
+            foreach (var block in versionTemp.Block)
+            {
+                foreach (var part in block.Parts)
+                {
+                    PartNGList.Add(part);
+                }
+            }
+            PartsListLv.ItemsSource = PartNGList;
             _Path = path;
-            SetAllPic(path + "\\" + board.Image.File);
+            SetAllPic(path + "\\" + "Picall.jpg");
         }
 
         void SetAllPic(string path)
@@ -50,15 +58,15 @@ namespace CheckProg
                 AllImageIb.Source = bitmapNG;
 
             }
-            catch { }
+            catch (Exception ex) { var x = ex.ToString(); }
         }
 
 
-        private void BlockSelectCb_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            List<Parts> parts = (((ComboBox)sender).SelectedItem as Classes.DataClasses.Block).Parts;
-            PartsListLv.ItemsSource = parts;
-        }
+        //private void BlockSelectCb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    List<Parts> parts = (((ComboBox)sender).SelectedItem as Classes.DataClasses.Block).Parts;
+        //    PartsListLv.ItemsSource = parts;
+        //}
 
         private void PartsListLv_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -68,11 +76,11 @@ namespace CheckProg
                 {
                     Parts selected = ((ListBox)sender).SelectedItem as Parts;
                     StepsListLv.ItemsSource = selected.Step;
-                    int fixX = (int)Convert.ToDouble(selected.X.Replace('.', ','));
-                    int fixY = (int)Convert.ToDouble(selected.Y.Replace('.', ','));
-                    int fixSizeX = (int)Convert.ToDouble(selected.SizeX.Replace('.', ','));
-                    int fixSizeY = (int)Convert.ToDouble(selected.SizeY.Replace('.', ','));
-                    DrawPos(fixX, fixY, fixSizeX > 1 ? fixSizeX : 1, fixSizeY > 1 ? fixSizeY : 1);
+                    int fixX = (int)(Convert.ToDouble(selected.X.Replace('.', ',')) * 10);
+                    int fixY = (int)(Convert.ToDouble(selected.Y.Replace('.', ',')) * 10);
+                    int fixSizeX = (int)(Convert.ToDouble(selected.SizeX.Replace('.', ',')) * 10);
+                    int fixSizeY = (int)(Convert.ToDouble(selected.SizeY.Replace('.', ',')) * 10);
+                    DrawPos(fixX, fixY, fixSizeX > 10 ? fixSizeX : 10, fixSizeY > 10 ? fixSizeY : 10);
                 }
             }
             catch { }
@@ -97,14 +105,14 @@ namespace CheckProg
 
         private void DrawPos(int x, int y, int sizex, int sizey)
         {
-            int fixTotalSizeX = (int)Convert.ToDouble(board.Info.Length.Replace('.', ','));
-            int fixTotalSizeY = (int)Convert.ToDouble(board.Info.Width.Replace('.', ','));
+            int fixTotalSizeX = (int)(Convert.ToDouble(board.Info.Length.Replace('.', ','))) * 10;
+            int fixTotalSizeY = (int)(Convert.ToDouble(board.Info.Width.Replace('.', ','))) * 10;
             y = fixTotalSizeY - y;
             Bitmap bitmap = new Bitmap(fixTotalSizeX, fixTotalSizeY, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             Graphics graphics = Graphics.FromImage(bitmap);
-            System.Drawing.Pen pen = new System.Drawing.Pen(System.Drawing.Color.Red, 1);
-            System.Drawing.Pen penG = new System.Drawing.Pen(System.Drawing.Color.Red, 0.1f);
-            graphics.DrawRectangle(pen, new System.Drawing.Rectangle(x, y, sizex, sizey));
+            System.Drawing.Pen pen = new System.Drawing.Pen(System.Drawing.Color.Red, 5);
+            System.Drawing.Pen penG = new System.Drawing.Pen(System.Drawing.Color.Red, 5f);
+            graphics.DrawRectangle(pen, new System.Drawing.Rectangle((x - (sizex / 2)), (y - (sizey / 2)), sizex, sizey));
             graphics.DrawLine(penG, x, 0, x, fixTotalSizeY);
             graphics.DrawLine(penG, 0, y, fixTotalSizeX, y);
             PosImageIb.Source = BitmapToBitmapImage(bitmap);

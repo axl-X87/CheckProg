@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CheckProg"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="1500">
+        Title="MainWindow" Height="450" Width="1500" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -14,40 +14,41 @@
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.1*"/>
+                <RowDefinition Height="3*"/>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="0.1*"/>
             </Grid.RowDefinitions>
-            <ComboBox x:Name="BlockSelectCb" SelectionChanged="BlockSelectCb_SelectionChanged" Grid.Row="0">
+            <!--<ComboBox x:Name="BlockSelectCb" SelectionChanged="BlockSelectCb_SelectionChanged" Grid.Row="0">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding No}"/>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
-            </ComboBox>
+            </ComboBox>-->
             <ListView x:Name="PartsListLv" SelectionChanged="PartsListLv_SelectionChanged" Grid.Row="1">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn DisplayMemberBinding="{Binding RefNo}"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding Name}"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding LibName}"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding LibParts}"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding X}"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding Y}"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding SizeX}"/>
-                        <GridViewColumn DisplayMemberBinding="{Binding SizeY}"/>
+						<GridViewColumn Header="Done">
+							<GridViewColumn.CellTemplate>
+								<DataTemplate>
+									<CheckBox IsChecked="False"/>
+								</DataTemplate>
+							</GridViewColumn.CellTemplate>
+						</GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding RefNo}" Header="REF"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding LibName}" Header="Lib Name"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding LibParts}" Header="Library"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding X}" Header="X"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Y}" Header="Y"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding SizeX}" Header="Size X"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding SizeY}" Header="Size Y"/>
                     </GridView>
                 </ListView.View>
             </ListView>
             <ListView x:Name="StepsListLv" SelectionChanged="StepsListLv_SelectionChanged" Grid.Row="2">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Done">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <CheckBox IsChecked="False"/>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding No}" Header="No"/>
                         <GridViewColumn DisplayMemberBinding="{Binding ViewNo}" Header="ViewNo"/>
                         <GridViewColumn DisplayMemberBinding="{Binding Status}" Header="Status"/>
@@ -57,7 +58,7 @@
                 </ListView.View>
             </ListView>
         </Grid>
-        <Image x:Name="PosImageIb" Grid.Column="1" Panel.ZIndex="1"/>
-        <Image x:Name="AllImageIb" Grid.Column="1" Panel.ZIndex="0"/>
+        <Image x:Name="AllImageIb" Grid.Column="1" />
+        <Image x:Name="PosImageIb" Grid.Column="1"/>
     </Grid>
 </Window>

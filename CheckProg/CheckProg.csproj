@@ -83,6 +83,7 @@
     </Compile>
     <Compile Include="Classes\DataClasses\XmlGenerated.cs" />
     <Compile Include="Classes\DataClasses\XmlParceClass.cs" />
+    <Compile Include="Classes\ImageSetterClass.cs" />
     <Compile Include="ImageWindow.xaml.cs">
       <DependentUpon>ImageWindow.xaml</DependentUpon>
     </Compile>

@@ -1,10 +1,12 @@
-﻿using CheckProg.Classes.DataClasses;
+﻿using CheckProg.Classes;
+using CheckProg.Classes.DataClasses;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace CheckProg
@@ -30,12 +33,13 @@ namespace CheckProg
         Board board = new Board();
         DataVersion versionTemp = new DataVersion();
         private string _Path { get; set; }
+        ImageSetterClass image;
         public MainWindow(string path, string name)
         {
             InitializeComponent();
             XmlParceClass xml = new XmlParceClass();
             xml.SetPath(path + "\\" + name);
-            versionTemp =  xml.XmlParceClassStart();
+            versionTemp = xml.XmlParceClassStart();
             board = versionTemp.Board;
             foreach (var block in versionTemp.Block)
             {
@@ -46,41 +50,23 @@ namespace CheckProg
             }
             PartsListLv.ItemsSource = PartNGList;
             _Path = path;
-            SetAllPic(path + "\\" + "Picall.jpg");
+            image = new ImageSetterClass(board, _Path);
         }
 
-        void SetAllPic(string path)
-        {
-            try
-            {
-                Uri uriNG = new Uri(path);
-                BitmapImage bitmapNG = new BitmapImage(uriNG);
-                AllImageIb.Source = bitmapNG;
-
-            }
-            catch (Exception ex) { var x = ex.ToString(); }
+        async void SetAllPic()
+        {          
+            AllImageIb.Source = await image.DrawRectPos(PartNGList);
         }
 
-
-        //private void BlockSelectCb_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        //{
-        //    List<Parts> parts = (((ComboBox)sender).SelectedItem as Classes.DataClasses.Block).Parts;
-        //    PartsListLv.ItemsSource = parts;
-        //}
-
-        private void PartsListLv_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void PartsListLv_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
                 if (((ListBox)sender).SelectedItem != null)
                 {
                     Parts selected = ((ListBox)sender).SelectedItem as Parts;
+                    AllImageIb.Source = await image.DrawCrossPos(selected);
                     StepsListLv.ItemsSource = selected.Step;
-                    int fixX = (int)(Convert.ToDouble(selected.X.Replace('.', ',')) * 10);
-                    int fixY = (int)(Convert.ToDouble(selected.Y.Replace('.', ',')) * 10);
-                    int fixSizeX = (int)(Convert.ToDouble(selected.SizeX.Replace('.', ',')) * 10);
-                    int fixSizeY = (int)(Convert.ToDouble(selected.SizeY.Replace('.', ',')) * 10);
-                    DrawPos(fixX, fixY, fixSizeX > 10 ? fixSizeX : 10, fixSizeY > 10 ? fixSizeY : 10);
                 }
             }
             catch { }
@@ -103,37 +89,14 @@ namespace CheckProg
             }
         }
 
-        private void DrawPos(int x, int y, int sizex, int sizey)
+        private void AllImageIb_Loaded(object sender, RoutedEventArgs e)
         {
-            int fixTotalSizeX = (int)(Convert.ToDouble(board.Info.Length.Replace('.', ','))) * 10;
-            int fixTotalSizeY = (int)(Convert.ToDouble(board.Info.Width.Replace('.', ','))) * 10;
-            y = fixTotalSizeY - y;
-            Bitmap bitmap = new Bitmap(fixTotalSizeX, fixTotalSizeY, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            Graphics graphics = Graphics.FromImage(bitmap);
-            System.Drawing.Pen pen = new System.Drawing.Pen(System.Drawing.Color.Red, 5);
-            System.Drawing.Pen penG = new System.Drawing.Pen(System.Drawing.Color.Red, 5f);
-            graphics.DrawRectangle(pen, new System.Drawing.Rectangle((x - (sizex / 2)), (y - (sizey / 2)), sizex, sizey));
-            graphics.DrawLine(penG, x, 0, x, fixTotalSizeY);
-            graphics.DrawLine(penG, 0, y, fixTotalSizeX, y);
-            PosImageIb.Source = BitmapToBitmapImage(bitmap);
+            SetAllPic();
         }
 
-        public BitmapImage BitmapToBitmapImage(Bitmap bitmap)
+        private void FilterOptTbx_TextChanged(object sender, TextChangedEventArgs e)
         {
-            using (var memory = new MemoryStream())
-            {
-                bitmap.Save(memory, ImageFormat.Png);
-                memory.Position = 0;
-
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = memory;
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.EndInit();
-                bitmapImage.Freeze();
-
-                return bitmapImage;
-            }
+            PartsListLv.ItemsSource = PartNGList.Where(where => where.RefNo.Contains(((TextBox)sender).Text));
         }
     }
 }

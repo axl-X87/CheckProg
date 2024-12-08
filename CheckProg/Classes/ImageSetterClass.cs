@@ -75,11 +75,11 @@ namespace CheckProg.Classes
             int sizex = (int)(Convert.ToDouble(part.SizeX.Replace('.', ',')) * 20);
             int sizey = (int)(Convert.ToDouble(part.SizeY.Replace('.', ',')) * 20);
             y = fixTotalSizeY - y;
-            Pen pen = new Pen(Color.Red, 5);
+            Pen pen = new Pen(Color.Red, 10);
             _graphics.DrawRectangle(pen, new Rectangle((x - (sizex / 2)), (y - (sizey / 2)), sizex, sizey));
         }
 
-        public async Task<BitmapImage> DrawCrossPos(Parts part)
+        public async Task<BitmapImage> DrawCrossPos(Parts part, int thick)
         {
             var temp = (Bitmap)_bitmapRendered.Clone();
             //Refresh();
@@ -89,7 +89,7 @@ namespace CheckProg.Classes
             y = fixTotalSizeY - y;
             int sizex = (int)(Convert.ToDouble(part.SizeX.Replace('.', ',')) * 20);
             int sizey = (int)(Convert.ToDouble(part.SizeY.Replace('.', ',')) * 20);
-            Pen penG = new Pen(Color.Red, 5f);
+            Pen penG = new Pen(Color.Red, thick);
             _graphics.DrawLine(penG, x, 0, x, fixTotalSizeY);
             _graphics.DrawLine(penG, 0, y, fixTotalSizeX, y);
             return SetImage(temp);

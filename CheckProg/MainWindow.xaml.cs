@@ -34,12 +34,14 @@ namespace CheckProg
         DataVersion versionTemp = new DataVersion();
         private string _Path { get; set; }
         ImageSetterClass image;
-        public MainWindow(string path, string name)
+        int thick = 0;
+        public MainWindow(string path, string name, int _thickness)
         {
             InitializeComponent();
             XmlParceClass xml = new XmlParceClass();
             xml.SetPath(path + "\\" + name);
             versionTemp = xml.XmlParceClassStart();
+            thick = _thickness;
             board = versionTemp.Board;
             foreach (var block in versionTemp.Block)
             {
@@ -65,7 +67,7 @@ namespace CheckProg
                 if (((ListBox)sender).SelectedItem != null)
                 {
                     Parts selected = ((ListBox)sender).SelectedItem as Parts;
-                    AllImageIb.Source = await image.DrawCrossPos(selected);
+                    AllImageIb.Source = await image.DrawCrossPos(selected, thick);
                     StepsListLv.ItemsSource = selected.Step;
                 }
             }

@@ -30,7 +30,7 @@ namespace CheckProg
 
         private void SendBtn_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow main = new MainWindow(selectedPath , ((string)SelectBoardCbx.SelectedItem));
+            MainWindow main = new MainWindow(selectedPath , ((string)SelectBoardCbx.SelectedItem), Convert.ToInt32(LineTbx.Text));
             main.Show();
         }
 
@@ -58,6 +58,14 @@ namespace CheckProg
             if (arr.Length > 0) 
             {
                 SelectBoardCbx.ItemsSource = arr;
+            }
+        }
+
+        private void LineTbx_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if ((e.Key < Key.D0 || e.Key > Key.D9) && e.Key != Key.Back)
+            {
+                e.Handled = true;
             }
         }
     }

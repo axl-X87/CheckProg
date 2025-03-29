@@ -35,6 +35,7 @@ namespace CheckProg
         private string _Path { get; set; }
         ImageSetterClass image;
         int thick = 0;
+        int sizeIMG = 10;
         public MainWindow(string path, string name, int _thickness)
         {
             InitializeComponent();
@@ -55,8 +56,24 @@ namespace CheckProg
             image = new ImageSetterClass(board, _Path);
         }
 
+        void WriteProbs()
+        {
+            Dictionary<string, string> pairs = new Dictionary<string, string>();
+            foreach (var part in PartNGList)
+            {
+                try
+                {
+                    pairs.Add(part.RefNo, part.Step[0].NGReason);
+                }
+                catch { }
+            }
+            SendToAPI api = new SendToAPI();
+            api.SetURL("");
+            api.SendData(IdTbx.Text, pairs);
+        }
+
         async void SetAllPic()
-        {          
+        {
             AllImageIb.Source = await image.DrawRectPos(PartNGList);
         }
 
@@ -99,6 +116,25 @@ namespace CheckProg
         private void FilterOptTbx_TextChanged(object sender, TextChangedEventArgs e)
         {
             PartsListLv.ItemsSource = PartNGList.Where(where => where.RefNo.Contains(((TextBox)sender).Text));
+        }
+
+        private void PlBtn_Click(object sender, RoutedEventArgs e)
+        {
+            sizeIMG += 1;
+            AllImageIb.Height = 100 * sizeIMG;
+            AllImageIb.Width = 100 * sizeIMG;
+        }
+
+        private void NgBtn_Click(object sender, RoutedEventArgs e)
+        {
+            sizeIMG -= 1;
+            AllImageIb.Height = 100 * sizeIMG;
+            AllImageIb.Width = 100 * sizeIMG;
+        }
+
+        private void SendProbBtn_Click(object sender, RoutedEventArgs e)
+        {
+            WriteProbs();
         }
     }
 }

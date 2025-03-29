@@ -13,23 +13,35 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50px"/>
+                <RowDefinition Height="70px"/>
                 <RowDefinition Height="3*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <GroupBox Header="Filter" Grid.Row="0" HorizontalAlignment="Stretch">
-                <TextBox x:Name="FilterOptTbx" TextChanged="FilterOptTbx_TextChanged" Height="25" FontSize="18" HorizontalAlignment="Stretch"/>
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="FilterOptTbx" TextChanged="FilterOptTbx_TextChanged" Height="25" FontSize="18" HorizontalAlignment="Stretch"/>
+                    <GroupBox Header="Size" Grid.Column="1" HorizontalAlignment="Stretch">
+                        <UniformGrid Columns="2">
+                            <Button Content="+" Height="20" Width="20" x:Name="PlBtn" Click="PlBtn_Click"/>
+                            <Button Content="-" Height="20" Width="20" x:Name="NgBtn" Click="NgBtn_Click"/>
+                        </UniformGrid>
+                    </GroupBox>
+                </Grid>
             </GroupBox>
             <ListView x:Name="PartsListLv" SelectionChanged="PartsListLv_SelectionChanged" Grid.Row="1">
                 <ListView.View>
                     <GridView>
-						<GridViewColumn Header="Done">
-							<GridViewColumn.CellTemplate>
-								<DataTemplate>
-									<CheckBox IsChecked="False"/>
-								</DataTemplate>
-							</GridViewColumn.CellTemplate>
-						</GridViewColumn>
+                        <GridViewColumn Header="Done">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="False"/>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding RefNo}" Header="REF"/>
                         <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name"/>
                         <GridViewColumn DisplayMemberBinding="{Binding LibName}" Header="Lib Name"/>
@@ -41,7 +53,12 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <ListView x:Name="StepsListLv" SelectionChanged="StepsListLv_SelectionChanged" Grid.Row="2">
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="7*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+            <ListView x:Name="StepsListLv" SelectionChanged="StepsListLv_SelectionChanged" Grid.Column="0">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn DisplayMemberBinding="{Binding No}" Header="No"/>
@@ -52,8 +69,15 @@
                     </GridView>
                 </ListView.View>
             </ListView>
+                <UniformGrid Columns="2"  Grid.Column="1">
+                    <TextBox x:Name="IdTbx"/>
+                    <Button x:Name="SendProbBtn" Content="Send" Click="SendProbBtn_Click" />                    
+                </UniformGrid>
+            </Grid>
         </Grid>
-        <Image x:Name="AllImageIb" Grid.Column="1" Panel.ZIndex="1" Loaded="AllImageIb_Loaded"/>
+        <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Visible">
+            <Image x:Name="AllImageIb"  Panel.ZIndex="1" Loaded="AllImageIb_Loaded"/>
+        </ScrollViewer>
         <!--<Image x:Name="PosImageIb" Grid.Column="1" Panel.ZIndex="2"/>
         <Image x:Name="AllPosImageIb" Grid.Column="1" Panel.ZIndex="3"/>-->
     </Grid>

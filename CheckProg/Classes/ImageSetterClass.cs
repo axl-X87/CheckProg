@@ -1,4 +1,5 @@
 ﻿using CheckProg.Classes.DataClasses;
+using CheckProg.Classes.ForPIPAction;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -22,12 +23,19 @@ namespace CheckProg.Classes
 
         public ImageSetterClass(Board board, string path) 
         {
-            fixTotalSizeX = (int)(Convert.ToDouble(board.Info.Length.Replace('.', ',')) * 20);
-            fixTotalSizeY = (int)(Convert.ToDouble(board.Info.Width.Replace('.', ',')) * 20);
+            fixTotalSizeX = (int)(Convert.ToDouble(board.Info.Length.Replace('.', ',')) * 10);
+            fixTotalSizeY = (int)(Convert.ToDouble(board.Info.Width.Replace('.', ',')) * 10);
             //_bitmap = new Bitmap((int)(Convert.ToDouble(board.Info.Length.Replace('.', ',')))
             //, (int)(Convert.ToDouble(board.Info.Width.Replace('.', ',')))
             //, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             _path = path; 
+            _bitmap = new Bitmap(path + "\\" + "Picall.jpg");
+        }
+        public ImageSetterClass(string path, int sX, int sY)
+        {
+            fixTotalSizeX = sX * 10;
+            fixTotalSizeY = sY * 10;
+            _path = path;
             _bitmap = new Bitmap(path + "\\" + "Picall.jpg");
         }
 
@@ -40,7 +48,7 @@ namespace CheckProg.Classes
         {
             using (var memory = new MemoryStream())
             {
-                bitmap.Save(memory, ImageFormat.Png);
+                bitmap.Save(memory, ImageFormat.Jpeg);
                 memory.Position = 0;
 
                 var bitmapImage = new BitmapImage();
@@ -68,12 +76,17 @@ namespace CheckProg.Classes
             return SetImage(_bitmapRendered);
         }
 
+        public async Task<BitmapImage> DrawNonRectPos()
+        {
+            return SetImage(_bitmap);
+        }
+
         private async Task Render(Parts part)
         {
-            int x = (int)(Convert.ToDouble(part.X.Replace('.', ',')) * 20);
-            int y = (int)(Convert.ToDouble(part.Y.Replace('.', ',')) * 20);
-            int sizex = (int)(Convert.ToDouble(part.SizeX.Replace('.', ',')) * 20);
-            int sizey = (int)(Convert.ToDouble(part.SizeY.Replace('.', ',')) * 20);
+            int x = (int)(Convert.ToDouble(part.X.Replace('.', ',')) * 10);
+            int y = (int)(Convert.ToDouble(part.Y.Replace('.', ',')) * 10);
+            int sizex = (int)(Convert.ToDouble(part.SizeX.Replace('.', ',')) * 10);
+            int sizey = (int)(Convert.ToDouble(part.SizeY.Replace('.', ',')) * 10);
             y = fixTotalSizeY - y;
             Pen pen = new Pen(Color.Red, 10);
             _graphics.DrawRectangle(pen, new Rectangle((x - (sizex / 2)), (y - (sizey / 2)), sizex, sizey));
@@ -81,14 +94,30 @@ namespace CheckProg.Classes
 
         public async Task<BitmapImage> DrawCrossPos(Parts part, int thick)
         {
-            var temp = (Bitmap)_bitmapRendered.Clone();
-            //Refresh();
+            _bitmap = null;
+            Refresh();
+            var temp = _bitmap;
             _graphics = Graphics.FromImage(temp);
-            int x = (int)(Convert.ToDouble(part.X.Replace('.', ',')) * 20);
-            int y = (int)(Convert.ToDouble(part.Y.Replace('.', ',')) * 20);
+            int x = (int)(Convert.ToDouble(part.X.Replace('.', ',')) * 10);
+            int y = (int)(Convert.ToDouble(part.Y.Replace('.', ',')) * 10);
             y = fixTotalSizeY - y;
-            int sizex = (int)(Convert.ToDouble(part.SizeX.Replace('.', ',')) * 20);
-            int sizey = (int)(Convert.ToDouble(part.SizeY.Replace('.', ',')) * 20);
+            int sizex = (int)(Convert.ToDouble(part.SizeX.Replace('.', ',')) * 10);
+            int sizey = (int)(Convert.ToDouble(part.SizeY.Replace('.', ',')) * 10);
+            Pen penG = new Pen(Color.Red, thick);
+            _graphics.DrawLine(penG, x, 0, x, fixTotalSizeY);
+            _graphics.DrawLine(penG, 0, y, fixTotalSizeX, y);
+            return SetImage(temp);
+        }
+
+        internal async Task<BitmapImage> DrawCrossPosPIP(PIPConvertClass pip, int thick)
+        {
+            var temp = (Bitmap)_bitmapRendered.Clone();
+            _graphics = Graphics.FromImage(temp);
+            int x = (int)(pip.CenterX * 10);
+            int y = (int)(pip.CenterY * 10);
+            y = fixTotalSizeY - y;
+            int sizex = (int)(pip.CenterX * 10);
+            int sizey = (int)(pip.CenterY * 10);
             Pen penG = new Pen(Color.Red, thick);
             _graphics.DrawLine(penG, x, 0, x, fixTotalSizeY);
             _graphics.DrawLine(penG, 0, y, fixTotalSizeX, y);

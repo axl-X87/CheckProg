@@ -1,0 +1,41 @@
+﻿<Window x:Class="CheckProg.PIPWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CheckProg"
+        mc:Ignorable="d"
+        Title="PIPWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70px"/>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <GroupBox Header="Filter" Grid.Row="0" HorizontalAlignment="Stretch">
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="FilterOptTbx"  Height="25" FontSize="18" HorizontalAlignment="Stretch"/>
+                    <GroupBox Header="Size" Grid.Column="1" HorizontalAlignment="Stretch">
+                        <UniformGrid Columns="2">
+                            <Button Content="+" Height="20" Width="20" x:Name="PlBtn" Click="PlBtn_Click"/>
+                            <Button Content="-" Height="20" Width="20" x:Name="NgBtn" Click="NgBtn_Click"/>
+                        </UniformGrid>
+                    </GroupBox>
+                </Grid>
+            </GroupBox>
+            <ListView x:Name="PIPListLv" SelectionChanged="PIPListLv_SelectionChanged" Grid.Row="1"></ListView>
+        </Grid>
+        <ScrollViewer Grid.Column="1" Grid.Row="1" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" CanContentScroll="True">
+            <Image x:Name="AllImageIb"  Panel.ZIndex="1" Loaded="AllImageIb_Loaded"/>
+        </ScrollViewer>
+    </Grid>
+</Window>

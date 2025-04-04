@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CheckProg"
         mc:Ignorable="d"
-        Title="BoardSelectWindow" Height="300" Width="400" ResizeMode="NoResize">
+        Title="BoardSelectWindow" Height="400" Width="400" ResizeMode="NoResize">
     <Grid VerticalAlignment="Top">
         <Grid.RowDefinitions>
-            <RowDefinition Height="100" />
+            <RowDefinition Height="150" />
             <RowDefinition Height="70" />
             <RowDefinition Height="50" />
             <RowDefinition Height="50" />
@@ -17,11 +17,17 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <GroupBox Header="Selected Path" Grid.Row="0" Margin="10 5" Height="40">
                 <TextBlock x:Name="PathTbx" MinWidth="150" />
             </GroupBox>
             <Button x:Name="BrowseBtn" Click="BrowseBtn_Click" Content="Select Path" Margin="5" Height="30" Grid.Row="1"/>
+            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                <TextBox x:Name="XSize"/>
+                <TextBox x:Name="YSize"/>
+                <Button x:Name="TestBtn" Click="TestBtn_Click" Content="Test" Margin="5" Height="30"/>
+            </StackPanel>
         </Grid>
         <GroupBox Header="Choose Board" Grid.Row="1" Height="50">
             <ComboBox x:Name="SelectBoardCbx" />

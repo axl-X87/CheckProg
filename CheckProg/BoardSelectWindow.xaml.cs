@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using CheckProg.Classes.ForPIPAction;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -67,6 +68,19 @@ namespace CheckProg
             {
                 e.Handled = true;
             }
+        }
+
+        private void TestBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var x = File.ReadAllLines(selectedPath + "//test.txt");
+            string[][] strings = new string[x.Length][];
+            for (int i = 0; i < x.Length; i++)
+            {
+                strings[i] = x[i].Split('\t');
+            }
+            PIPConvertClass pIP = new PIPConvertClass();
+            PIPWindow pip = new PIPWindow(pIP.CreateFromFile(strings), selectedPath, Convert.ToInt32(LineTbx.Text), Convert.ToInt32(XSize.Text), Convert.ToInt32(YSize.Text));
+            pip.Show();
         }
     }
 }

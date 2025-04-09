@@ -3,6 +3,7 @@ using CheckProg.Classes.DataClasses;
 using CheckProg.Classes.ForPIPAction;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,7 @@ namespace CheckProg
     public partial class PIPWindow : Window
     {
         int thick = 0;
+        int rotation = 0;
         int sX = 0;
         int sY = 0;
         int sizeIMG = 10;
@@ -43,12 +45,12 @@ namespace CheckProg
         private async void PIPListLv_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             PIPConvertClass selected = ((PIPConvertClass)PIPListLv.SelectedItem);
-            AllImageIb.Source = await image.DrawCrossPosPIP(selected, thick);
+            AllImageIb.Source = await image.DrawCrossPosPIP(selected, thick, Convert.ToDouble(XOfs.Text != ""? XOfs.Text : "0"), Convert.ToDouble(YOfs.Text != "" ? YOfs.Text : "0"), rotation - 90);
         }
 
         private async void AllImageIb_Loaded(object sender, RoutedEventArgs e)
         {
-            image = new ImageSetterClass(_Path, sX, sY);
+            image = new ImageSetterClass(_Path, sX, sY != 0 ? sY : 0);
             AllImageIb.Source = await image.DrawNonRectPos();
         }
 
@@ -64,6 +66,27 @@ namespace CheckProg
             sizeIMG -= 1;
             AllImageIb.Height = 100 * sizeIMG;
             AllImageIb.Width = 100 * sizeIMG;
+        }
+
+        private void SendOfs_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private async void RotPl_Click(object sender, RoutedEventArgs e)
+        {
+            image = new ImageSetterClass(_Path, sX, sY);
+            AllImageIb.Source = image.RotatePos(ref rotation);
+        }
+
+        private async void RotNeg_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void FilterOptTbx_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            PIPListLv.ItemsSource = ((List<PIPConvertClass>)PIPListLv.ItemsSource).Where(where => where.Designator.Contains(((TextBox)sender).Text));
         }
     }
 }

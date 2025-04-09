@@ -26,7 +26,7 @@ namespace CheckProg.Classes.DataClasses
         public DataVersion XmlParceClassStart() 
         {
             XmlSerializer serializer = new XmlSerializer(typeof(DataVersion));
-            using (StreamReader reader = new StreamReader(GlobalPath))
+            using ( StreamReader reader = new StreamReader(GlobalPath))
             {
                 return (DataVersion)serializer.Deserialize(reader);
             }

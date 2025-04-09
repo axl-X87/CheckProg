@@ -20,19 +20,39 @@
             <GroupBox Header="Filter" Grid.Row="0" HorizontalAlignment="Stretch">
                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10*" />
+                        <ColumnDefinition Width="5*" />
+                        <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="FilterOptTbx"  Height="25" FontSize="18" HorizontalAlignment="Stretch"/>
+                    <TextBox x:Name="FilterOptTbx" TextChanged="FilterOptTbx_TextChanged"  Height="25" FontSize="18" HorizontalAlignment="Stretch"/>
                     <GroupBox Header="Size" Grid.Column="1" HorizontalAlignment="Stretch">
                         <UniformGrid Columns="2">
                             <Button Content="+" Height="20" Width="20" x:Name="PlBtn" Click="PlBtn_Click"/>
                             <Button Content="-" Height="20" Width="20" x:Name="NgBtn" Click="NgBtn_Click"/>
                         </UniformGrid>
                     </GroupBox>
+                    <GroupBox Header="Size" Grid.Column="2" HorizontalAlignment="Stretch">
+                        <UniformGrid Columns="2">
+                            <Button Content="+90" Height="20" x:Name="RotPl" Click="RotPl_Click"/>
+                        </UniformGrid>
+                    </GroupBox>
                 </Grid>
             </GroupBox>
-            <ListView x:Name="PIPListLv" SelectionChanged="PIPListLv_SelectionChanged" Grid.Row="1"></ListView>
+            <ListView x:Name="PIPListLv" SelectionChanged="PIPListLv_SelectionChanged" Grid.Row="1">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Designator}" Margin="10 0"/>
+                            <TextBlock Text="{Binding PartNumber}" Margin="10 0"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <UniformGrid Grid.Row="2" Columns="3">
+                <TextBox x:Name="XOfs"/>
+                <TextBox x:Name="YOfs"/>
+                <Button x:Name="SendOfs" Content="Send" Click="SendOfs_Click"/>
+            </UniformGrid>
         </Grid>
         <ScrollViewer Grid.Column="1" Grid.Row="1" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" CanContentScroll="True">
             <Image x:Name="AllImageIb"  Panel.ZIndex="1" Loaded="AllImageIb_Loaded"/>

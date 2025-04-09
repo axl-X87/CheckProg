@@ -74,7 +74,7 @@ namespace CheckProg
 
         async void SetAllPic()
         {
-            AllImageIb.Source = await image.DrawNonRectPos();
+            AllImageIb.Source = await image.DrawRectPos(PartNGList, thick);
         }
 
         private async void PartsListLv_SelectionChanged(object sender, SelectionChangedEventArgs e)

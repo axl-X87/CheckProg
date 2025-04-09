@@ -66,14 +66,14 @@ namespace CheckProg.Classes
             image.Save(_path + "\\" + "tempImg.jpg", ImageFormat.Jpeg);
         }
 
-        public async Task<BitmapImage> DrawRectPos(List<Parts> parts)
+        public async Task<BitmapImage> DrawRectPos(List<Parts> parts, int border)
         {
             List<Task> tasks = new List<Task>();
             var temp = Refresh();
             _graphics = Graphics.FromImage(temp);
             foreach (var part in parts) 
             {
-                tasks.Add(Render(part));
+                tasks.Add(Render(part, border));
             }
             await Task.WhenAll(tasks);
             SaveDraw(temp);
@@ -85,14 +85,14 @@ namespace CheckProg.Classes
             return SetImage(RefreshDraw());
         }
 
-        private async Task Render(Parts part)
+        private async Task Render(Parts part, int border)
         {
             int x = (int)(Convert.ToDouble(part.X.Replace('.', ',')) * 20);
             int y = (int)(Convert.ToDouble(part.Y.Replace('.', ',')) * 20);
             int sizex = (int)(Convert.ToDouble(part.SizeX.Replace('.', ',')) * 20);
             int sizey = (int)(Convert.ToDouble(part.SizeY.Replace('.', ',')) * 20);
             y = fixTotalSizeY - y;
-            Pen pen = new Pen(Color.Red, 20);
+            Pen pen = new Pen(Color.Red, border);
             _graphics.DrawRectangle(pen, new Rectangle((x - (sizex / 2)), (y - (sizey / 2)), sizex, sizey));
         }
 
